@@ -1,0 +1,59 @@
+package com.pknu26.book_mng.service;
+
+import com.pknu26.book_mng.entity.Book;
+import com.pknu26.book_mng.repository.BookRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class BookService {
+
+    private final BookRepository bookRepository;
+
+    // ===============================
+    // 1. 도서 등록 (Create)
+    // ===============================
+    public Book save(Book book) {
+        return bookRepository.save(book);
+    }
+
+    // ===============================
+    // 2. 전체 조회 (Read)
+    // ===============================
+    public List<Book> findAll() {
+        return bookRepository.findAll();
+    }
+
+    // ===============================
+    // 3. 단건 조회 (Read)
+    // ===============================
+    public Book findById(Long id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 도서 없음: " + id));
+    }
+
+    // ===============================
+    // 4. 수정 (Update)
+    // ===============================
+    public Book update(Long id, Book updateBook) {
+        Book book = findById(id);
+
+        book.setTitle(updateBook.getTitle());
+        book.setAuthor(updateBook.getAuthor());
+        book.setPrice(updateBook.getPrice());
+        book.setStock(updateBook.getStock());
+        book.setCategory(updateBook.getCategory());
+
+        return bookRepository.save(book);
+    }
+
+    // ===============================
+    // 5. 삭제 (Delete)
+    // ===============================
+    public void delete(Long id) {
+        bookRepository.deleteById(id);
+    }
+}

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>도서 목록</title>
+</head>
+<body>
+
+<h1>도서 목록</h1>
+
+<a th:href="@{/book/create}">도서 등록</a>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>제목</th>
+        <th>저자</th>
+        <th>출판사</th>
+        <th>ISBN</th>
+        <th>카테고리</th>
+        <th>가격</th>
+        <th>재고 수량</th>
+        <th>출판일</th>
+        <th>책 설명</th>
+        <th>생성일</th>
+        <th>수정일</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.bookId}"></td>
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.author}"></td>
+        <td th:text="${book.publisher}"></td>
+        <td th:text="${book.isbn}"></td>
+        <td th:text="${book.category}"></td>
+        <td th:text="${book.price}"></td>
+        <td th:text="${book.stock}"></td>
+        <td th:text="${book.publishedDate}"></td>
+        <td th:text="${book.description}"></td>
+        <td th:text="${book.createdAt}"></td>
+        <td th:text="${book.updatedAt}"></td>
+        <td>
+            <a th:href="@{|/book/${book.bookId}|}">보기</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

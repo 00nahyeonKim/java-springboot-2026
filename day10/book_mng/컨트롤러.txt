@@ -1,0 +1,79 @@
+package com.pknu26.book_mng.controller;
+
+import com.pknu26.book_mng.entity.Book;
+import com.pknu26.book_mng.service.BookService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/book")
+public class BookController {
+
+    private final BookService bookService;
+
+    // ===============================
+    // 1. 도서 목록
+    // ===============================
+    @GetMapping("/list")
+    public String list(Model model) {
+        model.addAttribute("books", bookService.findAll());
+        return "book/list";
+    }
+
+    // ===============================
+    // 2. 등록 화면
+    // ===============================
+    @GetMapping("/create")
+    public String createForm(Model model) {
+        model.addAttribute("book", new Book());
+        return "book/create";
+    }
+
+    // ===============================
+    // 3. 등록 처리
+    // ===============================
+    @PostMapping("/create")
+    public String create(@ModelAttribute Book book) {
+        bookService.save(book);
+        return "redirect:/book/list";
+    }
+
+    // ===============================
+    // 4. 상세 조회
+    // ===============================
+    @GetMapping("/{id}")
+    public String detail(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("book", bookService.findById(id));
+        return "book/detail";
+    }
+
+    // ===============================
+    // 5. 수정 화면
+    // ===============================
+    @GetMapping("/{id}/edit")
+    public String editForm(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("book", bookService.findById(id));
+        return "book/edit";
+    }
+
+    // ===============================
+    // 6. 수정 처리
+    // ===============================
+    @PostMapping("/{id}/edit")
+    public String update(@PathVariable("id") Long id, @ModelAttribute Book book) {
+        bookService.update(id, book);
+        return "redirect:/book/" + id;
+    }
+
+    // ===============================
+    // 7. 삭제
+    // ===============================
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable("id") Long id) {
+        bookService.delete(id);
+        return "redirect:/book/list";
+    }
+}
